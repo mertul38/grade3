@@ -1,0 +1,4 @@
+
+init:
+    irmovq $5, %rax
+    halt

@@ -1,0 +1,72 @@
+# MERT ULUDOĞAN 2380996
+
+
+#implement your code below (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+# mid = rcx
+# mid_v = r12
+# initial_begin = rbx
+# begin = rdi ; end = rsi ; value ; rdx
+
+binary_search:
+    irmovq $8, %r10
+    irmovq $2, %r11
+    call binary_search_helper
+    ret
+binary_search_helper:
+    rrmovq %rsi, %rcx
+    subq %rdi, %rcx
+    dvvq %r10, %rcx
+    dvvq %r11, %rcx
+    mllq %r10, %rcx
+    addq %rdi, %rcx
+    mrmovq (%rcx), %r12
+    rrmovq %rdi, %r13
+    subq %rsi, %r13
+    jge terminate_case 
+    rrmovq %r12, %rax
+    subq %rdx, %rax
+    je equal_case
+    jl up_case
+down_case:
+    rrmovq %rcx, %rsi
+    call binary_search_helper
+    ret
+up_case:
+    rrmovq %rcx, %r13
+    subq %rdi, %r13
+    dvvq %r10, %r13
+    irmovq $1, %r14
+    addq %r14, %r13
+    pushq %r13, stack
+
+    rrmovq %rcx, %rdi
+    addq %r10, %rdi
+    call binary_search_helper
+    popq %r8
+    irmovq $-1, %r13
+    subq %rax, %r13
+    jne u_1
+    ret
+    u_1:
+        addq %r8, %rax
+        ret
+
+equal_case:
+    rrmovq %rcx, %rax
+    subq %rdi, %rax
+    dvvq %r10, %rax
+    irmovq $1, %r13
+    addq %r13, %rax
+    ret
+terminate_case:
+    irmovq $-1, %rax
+    ret
+
+
+#implement your code above (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+.pos 0x2F00
+stack:
+    .quad 0
+

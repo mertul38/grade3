@@ -1,0 +1,12 @@
+echo "Conllu -> Spacy converting..."
+python3 -m spacy convert Task1/tr_imst-ud-train.conllu Task1
+echo "train data converted!"
+python3 -m spacy convert Task1/tr_imst-ud-test.conllu Task1
+echo "test data converted!"
+python3 -m spacy convert Task1/tr_imst-ud-dev.conllu Task1
+echo "dev data converted!"
+echo "training starting..."
+python3 -m spacy train config.cfg --output ./output --paths.train ./Task1/tr_imst-ud-train.spacy --paths.dev ./Task1/tr_imst-ud-dev.spacy --training.max_epochs=3
+echo "trained!"
+echo "test starting..."
+python3 -m spacy evaluate ./output/model-best ./Task1/tr_imst-ud-test.spacy

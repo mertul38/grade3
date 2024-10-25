@@ -1,0 +1,63 @@
+# MERT ULUDOĞAN 2380996
+
+
+#implement your code below (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+# begin_1 = rdi ; end_1 = rsi
+# begin_2 = rdx ; end_2 = rcx
+# begin_3 = r8  
+
+
+merge:
+    irmovq $8, %r14
+    loop_1: 
+        rrmovq %rdi, %r9
+        subq %rsi, %r9
+        jge loop_2 # begin1 < end1 control
+        rrmovq %rdx, %r10
+        subq %rcx, %r10 
+        jge loop_2 # begin2 < end2 control
+        mrmovq (%rdi), %r9
+        mrmovq (%rdx), %r10
+        subq %r10, %r9
+        jl b1_less # begin1 < begin2
+        mrmovq (%rdx), %r9
+        rmmovq %r9, (%r8)
+        addq %r14, %r8
+        addq %r14, %rdx # begin3 = begin1
+        jmp loop_1 
+        b1_less: 
+            mrmovq (%rdi), %r9
+            rmmovq %r9, (%r8)
+            addq %r14, %r8
+            addq %r14, %rdi # begin3 = begin2
+            jmp loop_1
+
+    loop_2: # begin1 < end1
+        rrmovq %rdi, %r9
+        subq %rsi, %r9
+        jge loop_3 
+        mrmovq (%rdi), %r9
+        rmmovq %r9, (%r8)
+        addq %r14, %r8
+        addq %r14, %rdi # begin3 = begin1 ; begin3++ ; begin1++ ;
+        jmp loop_2 
+
+    loop_3: # begin2 < end2
+        rrmovq %rdx, %r9
+        subq %rcx, %r9 
+        jge terminate
+        mrmovq (%rdx), %r9
+        rmmovq %r9, (%r8)
+        addq %r14, %r8
+        addq %r14, %rdx # begin3 = begin2 ; begin3++ ; begin2++ ;
+        jmp loop_3
+    terminate:
+        ret
+
+#implement your code above (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+.pos 0x2F00
+stack:
+    .quad 0
+

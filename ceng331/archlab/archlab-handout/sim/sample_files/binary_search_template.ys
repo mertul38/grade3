@@ -1,0 +1,71 @@
+# MERT ULUDOĞAN 2380996
+.pos 0x0
+init:
+    irmovq stack, %rsp
+    irmovq $6, %rdx
+    irmovq array_begin, %rdi
+    irmovq array_end, %rsi
+    call binary_search
+    halt
+
+#implement your code below (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+# mid = rcx
+# initial_begin = rbx
+
+# begin = rdi ; end = rsi ; value ; rdx
+
+binary_search:
+    rrmovq %rdi, %rbx
+loop:
+loop_case:
+    rrmovq %rsi, %rax
+    subq %rdi, %rax
+    jle failure
+calculate_mid:
+    rrmovq %rsi, %rcx
+    subq %rdi, %rcx
+    irmovq $2, %rax
+    dvvq %rax, %rcx
+    addq %rdi, %rcx
+    mrmovq (%rcx), %rax
+check_mid:
+    subq %rdx, %rax
+    je success
+    jl mid_less
+mid_greater:
+    rrmovq %rcx, %rsi
+    jmp loop
+success:
+    subq %rbx, %rcx
+    irmovq $1, %rax
+    addq %rcx, %rax
+    ret 
+mid_less:
+    rrmovq %rcx, %rdi
+    irmovq $1, %rax
+    addq %rax, %rdi
+    jmp loop
+failure:
+    irmovq $0, %rax
+    ret
+
+#implement your code above (DO NOT CHANGE/REMOVE THIS COMMENT)
+
+.pos 0x1008
+array_begin:
+    .quad 1
+    .quad 2
+    .quad 3
+    .quad 5
+    .quad 6
+    .quad 7
+    .quad 9
+    .quad 11
+array_end:
+    .quad 0
+.pos 0x1F00
+stack:
+    .quad 0
+
+

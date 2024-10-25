@@ -1,0 +1,6 @@
+Final text is The sound of raindrops on a tin roof is oddly soothing.
+2 3 9 18 35 63
+6 3 51064811
+5 1953125
+cepbnj
+4 2 5 6 3 1
